@@ -5,17 +5,17 @@ require("data.table")
 require("rpart")
 require("parallel")
 
-PARAM <- list()
+PARAM <- list() # nolint: object_name_linter.
 # reemplazar por las propias semillas
-PARAM$semillas <- c(102191, 200177, 410551, 552581, 892237)
+PARAM$semillas <- c(102191, 200177, 410551, 552581, 892237) # nolint: object_name_linter, line_length_linter.
 
 #------------------------------------------------------------------------------
 # particionar agrega una columna llamada fold a un dataset que consiste
 #  en una particion estratificada segun agrupa
-# particionar( data=dataset, division=c(70,30), agrupa=clase_ternaria, seed=semilla)
+# particionar( data=dataset, division=c(70,30), agrupa=clase_ternaria, seed=semilla) # nolint: line_length_linter.
 #  crea una particion 70, 30
 
-particionar <- function(data, division, agrupa = "", campo = "fold", start = 1, seed = NA) {
+particionar <- function(data, division, agrupa = "", campo = "fold", start = 1, seed = NA) { # nolint: line_length_linter.
   if (!is.na(seed)) set.seed(seed)
 
   bloque <- unlist(mapply(function(x, y) {
@@ -28,9 +28,9 @@ particionar <- function(data, division, agrupa = "", campo = "fold", start = 1, 
 }
 #------------------------------------------------------------------------------
 
-ArbolEstimarGanancia <- function(semilla, param_basicos) {
+ArbolEstimarGanancia <- function(semilla, param_basicos) { # nolint: object_name_linter, line_length_linter.
   # particiono estratificadamente el dataset
-  particionar(dataset, division = c(7, 3), agrupa = "clase_ternaria", seed = semilla)
+  particionar(dataset, division = c(7, 3), agrupa = "clase_ternaria", seed = semilla) # nolint: line_length_linter.
 
   # genero el modelo
   # predecir clase_ternaria a partir del resto
@@ -51,7 +51,7 @@ ArbolEstimarGanancia <- function(semilla, param_basicos) {
   # cada columna es el vector de probabilidades
 
 
-  # calculo la ganancia en testing  qu es fold==2
+  # calculo la ganancia en testing  que es fold==2
   ganancia_test <- dataset[
     fold == 2,
     sum(ifelse(prediccion[, "BAJA+2"] > 0.025,
@@ -78,11 +78,11 @@ ArbolEstimarGanancia <- function(semilla, param_basicos) {
 #------------------------------------------------------------------------------
 
 # Aqui se debe poner la carpeta de la computadora local
-setwd("~/buckets/b1/") # Establezco el Working Directory
+setwd("/Users/Fernando LA/Desktop/Data Mining") # Establezco el Working Directory # nolint: line_length_linter.
 # cargo los datos
 
 # cargo los datos
-dataset <- fread("~/datasets/dataset_pequeno.csv")
+dataset <- fread("./dataset_pequeno.csv")
 
 # trabajo solo con los datos con clase, es decir 202107
 dataset <- dataset[clase_ternaria != ""]
@@ -105,7 +105,7 @@ salidas <- mcmapply(ArbolEstimarGanancia,
   PARAM$semillas, # paso el vector de semillas
   MoreArgs = list(param_basicos), # aqui paso el segundo parametro
   SIMPLIFY = FALSE,
-  mc.cores = 5  # en Windows este valor debe ser 1
+  mc.cores = 1  # en Windows este valor debe ser 1
 )
 
 # muestro la lista de las salidas en testing
