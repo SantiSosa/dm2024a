@@ -7,7 +7,7 @@ require("rpart")
 require("rpart.plot")
 
 # Aqui se debe poner la carpeta de la materia de SU computadora local
-setwd("X:\\gdrive\\itba2024a\\") # Establezco el Working Directory
+setwd("~/buckets/b1") # Establezco el Working Directory
 
 # cargo el dataset
 dataset <- fread("./datasets/dataset_pequeno.csv")
@@ -19,7 +19,7 @@ dapply <- dataset[foto_mes == 202109] # defino donde voy a aplicar el modelo
 # quiero predecir clase_ternaria a partir de el resto de las variables
 modelo <- rpart(
         formula = "clase_ternaria ~ .",
-        data = dtrain, # los datos donde voy a entrenar
+        data = dtrain  #[ ,v_rank:=frankv(ctrx_quarter)/.N],
         xval = 0,
         cp = -0.3, # esto significa no limitar la complejidad de los splits
         minsplit = 0, # minima cantidad de registros para que se haga el split
@@ -27,7 +27,12 @@ modelo <- rpart(
         maxdepth = 3
 ) # profundidad maxima del arbol
 
-
+importancia <- modelo$variable.importance
+importancia <- data.table(
+        variable = names(importancia),
+        importancia = importancia
+)
+print(importancia[order(-importancia)])
 # grafico el arbol
 prp(modelo,
         extra = 101, digits = -5,
