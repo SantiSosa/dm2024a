@@ -42,7 +42,7 @@ PARAM$input$training <- c(202107) # los meses en los que vamos a entrenar
 # undersampling de 1.0  implica tomar TODOS los datos
 PARAM$trainingstrategy$undersampling <- 1.0
 
-PARAM$hyperparametertuning$iteraciones <- 120
+PARAM$hyperparametertuning$iteraciones <- 150 #120 era como venia el script
 PARAM$hyperparametertuning$xval_folds <- 5
 PARAM$hyperparametertuning$POS_ganancia <- 117000
 PARAM$hyperparametertuning$NEG_ganancia <- -3000
@@ -55,7 +55,10 @@ hs <- makeParamSet(
   makeNumericParam("feature_fraction", lower = 0.2, upper = 1.0),
   makeIntegerParam("min_data_in_leaf", lower = 1L, upper = 8000L),
   makeIntegerParam("num_leaves", lower = 16L, upper = 1024L),
-  makeIntegerParam("envios", lower = 5000L, upper = 15000L)
+  makeIntegerParam("envios", lower = 5000L, upper = 15000L),
+  makeIntegerParam("lambda_l1", lower = 0.05, upper = 0.2),
+  makeIntegerParam("lambda_l2", lower = 0.05, upper = 0.2),
+  makeIntegerParam("min_gain_to_split", lower = 0.00005, upper = 0.001)
 )
 
 #------------------------------------------------------------------------------
@@ -139,9 +142,9 @@ EstimarGanancia_lightgbm <- function(x) {
     feature_pre_filter = FALSE,
     verbosity = -100,
     max_depth = -1, # -1 significa no limitar,  por ahora lo dejo fijo
-    min_gain_to_split = 0.0, # por ahora, lo dejo fijo
-    lambda_l1 = 0.0, # por ahora, lo dejo fijo
-    lambda_l2 = 0.0, # por ahora, lo dejo fijo
+    #min_gain_to_split = 0.0, # por ahora, lo dejo fijo
+    #lambda_l1 = 0.0, # por ahora, lo dejo fijo
+    #lambda_l2 = 0.0, # por ahora, lo dejo fijo
     max_bin = 31, # por ahora, lo dejo fijo
     num_iterations = 9999, # valor grande, lo limita early_stopping_rounds
     force_row_wise = TRUE, # para evitar warning
