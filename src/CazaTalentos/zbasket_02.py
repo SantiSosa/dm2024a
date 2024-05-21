@@ -1,6 +1,6 @@
-import  numpy as np
+import numpy as np
 
-np.random.seed(102191)
+np.random.seed(251000)
 
 #calcula cuantos encestes logra un jugador con indice de enceste prob
 #haciendo qyt tiros libres
@@ -26,7 +26,7 @@ vec_ftirar(jugadores, 10)
 
 primero_ganador = 0
 
-for i in range(10000): #diez mil experimentos
+for i in range(10000): #diez mil experimentoseun
   vaciertos = vec_ftirar(jugadores, 10) #10 tiros libres cada jugador
   mejor = np.argmax(vaciertos)
   if mejor == 0:
