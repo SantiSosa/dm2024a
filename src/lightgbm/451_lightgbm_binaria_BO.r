@@ -33,7 +33,7 @@ options(error = function() {
 #  muy pronto esto se leera desde un archivo formato .yaml
 PARAM <- list()
 
-PARAM$experimento <- "HT4600"     #"HT4510"
+PARAM$experimento <- "HT4700"    #HT4600 #"HT4510"
 
 PARAM$input$dataset <- "~/datasets/dataset_pequeno.csv"
 PARAM$input$training <- c(202107) # los meses en los que vamos a entrenar
@@ -42,7 +42,7 @@ PARAM$input$training <- c(202107) # los meses en los que vamos a entrenar
 # undersampling de 1.0  implica tomar TODOS los datos
 PARAM$trainingstrategy$undersampling <- 1.0
 
-PARAM$hyperparametertuning$iteraciones <- 150 #120 era como venia el script
+PARAM$hyperparametertuning$iteraciones <- 120 
 PARAM$hyperparametertuning$xval_folds <- 5
 PARAM$hyperparametertuning$POS_ganancia <- 117000
 PARAM$hyperparametertuning$NEG_ganancia <- -3000
@@ -51,14 +51,15 @@ PARAM$hyperparametertuning$NEG_ganancia <- -3000
 
 # Aqui se cargan los bordes de los hiperparametros
 hs <- makeParamSet(
-  makeNumericParam("learning_rate", lower = 0.01, upper = 0.3),
-  makeNumericParam("feature_fraction", lower = 0.2, upper = 1.0),
+  makeNumericParam("learning_rate", lower = 0, upper = 1),
+  makeNumericParam("feature_fraction", lower = 0.1, upper = 0.9),
   makeIntegerParam("min_data_in_leaf", lower = 1L, upper = 8000L),
   makeIntegerParam("num_leaves", lower = 16L, upper = 1024L),
   makeIntegerParam("envios", lower = 5000L, upper = 15000L),
-  makeIntegerParam("lambda_l1", lower = 0.05, upper = 0.2),
-  makeIntegerParam("lambda_l2", lower = 0.05, upper = 0.2),
-  makeIntegerParam("min_gain_to_split", lower = 0.00005, upper = 0.001)
+  makeIntegerParam("lambda_l1", lower = 0, upper = 1000),
+  makeIntegerParam("lambda_l2", lower = 0, upper = 1000),
+  makeIntegerParam("min_gain_to_split", lower = 0, upper = 20),
+  makeIntegerParam("max_bin", lower = 4, upper = 1023)
 )
 
 #------------------------------------------------------------------------------
@@ -145,7 +146,7 @@ EstimarGanancia_lightgbm <- function(x) {
     #min_gain_to_split = 0.0, # por ahora, lo dejo fijo
     #lambda_l1 = 0.0, # por ahora, lo dejo fijo
     #lambda_l2 = 0.0, # por ahora, lo dejo fijo
-    max_bin = 31, # por ahora, lo dejo fijo
+    #max_bin = 31, # por ahora, lo dejo fijo
     num_iterations = 9999, # valor grande, lo limita early_stopping_rounds
     force_row_wise = TRUE, # para evitar warning
     seed = ksemilla_azar1
@@ -219,7 +220,7 @@ EstimarGanancia_lightgbm <- function(x) {
 setwd("~/buckets/b1/") # Establezco el Working Directory
 
 # cargo MI semilla, que esta en MI bucket
-tabla_semillas <- fread( "./datasets//mis_semillas.txt" )
+tabla_semillas <- fread("./datasets//mis_semillas.txt")
 ksemilla_azar1 <- tabla_semillas[ 1, semilla ]  # 1 es mi primera semilla
 ksemilla_azar2 <- tabla_semillas[ 2, semilla ]  # 2 es mi segunda semilla
 

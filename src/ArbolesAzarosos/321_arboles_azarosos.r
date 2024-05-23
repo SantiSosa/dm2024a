@@ -16,18 +16,18 @@ PARAM$experimento <- 3510
 # parameetros rpart
 PARAM$rpart_param <- list(
   "cp" = -1,
-  "minsplit" = 100,
-  "minbucket" = 20,
-  "maxdepth" = 6
+  "minsplit" = 50,
+  "minbucket" = 5,
+  "maxdepth" = 14
 )
 
 # parametros  arbol
 # entreno cada arbol con solo 50% de las variables variables
-PARAM$feature_fraction <- 0.5
+PARAM$feature_fraction <- 0.8
 # voy a generar 500 arboles,
 #  a mas arboles mas tiempo de proceso y MEJOR MODELO,
 #  pero ganancias marginales
-PARAM$num_trees_max <- 500
+PARAM$num_trees_max <- 200
 
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
