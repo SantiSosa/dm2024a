@@ -64,7 +64,7 @@ AgregaVarRandomForest <- function() {
     prediccion <- predict(
         modelo,
         datamatrix,
-        type = "leaf"
+        type = "leaf"  #TE DEVUELVE EL NUMERO DE HOJA, EN VEZ DE DARTE LA PRO TE DA LA HOJA 
     )
     cat( "Fin prediccion\n" )
 
